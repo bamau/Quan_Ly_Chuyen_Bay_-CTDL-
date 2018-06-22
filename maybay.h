@@ -6,12 +6,12 @@
 #define TRUE 1
 #define FALSE 0 
 
-int empty(listmb dsmb)
+int empty(listmb &dsmb)
 {
 	return(dsmb.n==0 ? TRUE : FALSE);
 }
 
-int full(listmb dsmb)
+int full(listmb &dsmb)
 {
 	return(dsmb.n==MAXMB ? TRUE : FALSE);
 }
@@ -20,7 +20,6 @@ int full(listmb dsmb)
 //HAM NHAP THONG TIN MAY BAY
 void nhap_mb(MayBay &mb)
 {
-	system("cls");
 	fflush(stdin);
 	cout<<"Nhap so hieu may bay: ";
 	gets(mb.sohieu);
@@ -42,16 +41,17 @@ void nhapds_mb(listmb &dsmb)//HAM NHAP DANH SACH MAY BAY
 	{
 		nhap_mb(dsmb.mb[i]);
 	}
+	cout<<"Da nhap xong "<<dsmb.n<<" may bay!\n";
 };
 //HAM XUAT THONG TIN MOT MAY BAY
 void xuat_mb(MayBay mb)
 {
-	cout<< mb.sohieu<<setw(15)<<mb.loai<<setw(15)<<mb.cho<<setw(5);
+	cout<< mb.sohieu<<"\t"<<mb.loai<<"\t\t"<<mb.cho<<endl;
 };
 //HAM XUAT DANH SACH MAY BAY
 void xuatds_mb(listmb dsmb)
 {
-	cout<<"So Hieu"<<setw(15)<<"Loai"<<setw(15)<<"Cho"<<setw(5)<<endl;
+	cout<<"So Hieu\t"<<"Loai\t\t"<<"Cho"<<endl;
 	for(int i=0; i<dsmb.n; i++)
 	{
 		xuat_mb(dsmb.mb[i]);
@@ -62,54 +62,160 @@ int kt_full(listmb dsmb)
 {
 	return (dsmb.n==	MAXMB ? TRUE : FALSE);
 }
-// HAM THEM MAY BAY VAO DS MAY BAY
-//void insert_mb(listmb &dsmb, int i, int info)
-//{
-//	int j;
-//	if(i<0||i>dsmb.n)
-//	cout<<"Vi tri them khong phu hop!\n";
-//	else if(kt_full(dsmb)==1)
-//		cout<<"Danh sach da day!";
-//		else
-//		{
-//		cout<<"Nhap vao info may bay: ";
-//		info==nhap_mb(mb);
-//			if(i==0)i=1;
-//			for(j=dsmb.n-1;j>=i-1;j--)
-//				dsmb.mb[j+1]=dsmb.mb[j];
-//			dsmb.mb[i-1]=info;
-//			dsmb.n++;
-//		}
-//		
-//}
 
 void SaveList (listmb &dsmb, char *tenfile){
   FILE *f;// khai bao bien file
-  f= fopen (tenfile, "w"); 
-  if (f==NULL) { printf ("Loi mo file de ghi"); return ; }
+  f= fopen (tenfile, "wb"); 
+  if (f==NULL) { cout<< "Loi mo file de ghi"; return ; }
   
   for (int i=0; i < dsmb.n ; i++)
   {
-    fwrite (&dsmb.mb[i].sohieu, sizeof(dsmb.mb[i].sohieu),1,f);
-  	fwrite (&dsmb.mb[i].loai, sizeof(dsmb.mb[i].loai),1,f);
-  	fwrite (&dsmb.mb[i].cho, sizeof(dsmb.mb[i].cho),4,f);
+    fwrite (&dsmb.mb, sizeof(dsmb.mb),1,f);
   }
   fclose(f);
 }
 
-//
+void OpenList ( listmb &dsmb, char *tenfile){
+  FILE *f; 
+  f= fopen (tenfile, "rb");
+  if (f==NULL) { cout<< "Loi mo file de doc"; return ; }
+  else cout<<"Load file thanh cong!\n";
+  int i=0;
+   while ( fread (&dsmb.mb, sizeof(dsmb.mb),1,f)!=0 ) i++;
+  fclose(f);
+  dsmb.n=i;
+}
 
-int insert_item(listmb &dsmb)
+
+int insert_item(listmb &dsmb,int n)
 {
-	MayBay mb;
 	if (full(dsmb)==TRUE)
 	
 		cout <<"Danh sach day!";
 	else if(dsmb.n<MAXMB)
 		{
-			nhap_mb(dsmb.mb[dsmb.n++]);
+			for(int i=1; i<=n; i++)
+				nhap_mb(dsmb.mb[dsmb.n++]);
 		}
-		system("cls");
-		cout<<"Da them thanh cong!\n";
+		cout<<"\nDa them "<<n<<" may bay!\n";
 }
 
+int BSearch(listmb &ds,MayBay info)
+{
+	int left=0;
+	int right=ds.n-1;
+	do
+	{
+		for(int i=0 ; i<ds.n ;i++)
+		{
+			int mid=(left+right)/2;
+			if(strcmp(ds.mb[mid].sohieu, info.sohieu)==0)
+				return mid;
+			else if(strcmp(ds.mb[mid].sohieu, info.sohieu)==1)
+				right=mid-1;
+			else 
+				left=mid+1;	
+		}
+	}while(left<=right);
+	return -1;
+}
+
+void Edit_list(listmb &ds,MayBay info)
+{
+	int left=0;
+	int right=ds.n-1;
+	char *tenfile;
+	cout<<"Nhap so hieu may bay can sua: ";
+	gets(info.sohieu);
+	do
+	{
+		for(int i=0 ; i<ds.n ;i++)
+		{
+			int mid=(left+right)/2;
+			if(strcmp(ds.mb[mid].sohieu, info.sohieu)==0)	
+			{
+				cout<<"Nhap thong tin moi: ";
+				nhap_mb(info);
+				strcpy(ds.mb[mid].sohieu, info.sohieu);
+				strcpy(ds.mb[mid].loai, info.loai);
+				ds.mb[mid].cho = info.cho;
+				SaveList(ds,tenfile);
+				left=mid+1;
+			}
+			else if(strcmp(ds.mb[mid].sohieu, info.sohieu)==1)
+				right=mid-1;
+			else 
+				left=mid+1;	
+		}
+	}while(left<=right);
+	cout<<"Khong tim thay!\n";
+}
+void edit_list(listmb &ds, MayBay info, MayBay result)
+{
+	int dem=0;
+	char *tenfile;
+	nhap_mb(result);
+	for(int i=0;i<ds.n;i++ )
+	{
+		if(strcmp(ds.mb[i].sohieu, info.sohieu)==0)
+		{
+			ds.mb[i]=result; 
+			dem++;
+		}
+	}
+	cout<<"\nDa chinh sua "<<dem<<" may bay!\n";
+}
+void Quicksort(listmb &dsmb, int left, int right)
+{
+	if(left >= right) return;
+	MayBay pivot = dsmb.mb[(left + right) / 2];
+	int i= left; int j= right;
+	do
+	{
+		while (strcmp(dsmb.mb[i].sohieu, pivot.sohieu) < 0) i++;
+		while (strcmp(dsmb.mb[j].sohieu, pivot.sohieu) > 0) j--;
+		if(i<=j)
+		{
+			char sohieu[15];
+			char loai[40];
+			strcpy(sohieu, dsmb.mb[i].sohieu);
+			strcpy(loai, dsmb.mb[i].loai);
+			int cho=dsmb.mb[i].cho;		
+				
+			strcpy(dsmb.mb[i].sohieu, dsmb.mb[j].sohieu);
+			strcpy(dsmb.mb[i].loai, dsmb.mb[j].loai);
+			dsmb.mb[i].cho=dsmb.mb[j].cho;
+			
+			strcpy(dsmb.mb[j].sohieu, sohieu);
+			strcpy(dsmb.mb[j].loai, loai);
+			dsmb.mb[j].cho=cho;
+			i++;
+			j--;
+		}
+	}while(i<j);
+	Quicksort(dsmb, left, j);
+	Quicksort(dsmb, i, right);
+}
+int delete_item(listmb &ds,int i){
+	int j;
+	for(j=i+1;j<ds.n;++j){
+		ds.mb[j-1]=ds.mb[j];
+	}
+		ds.n--;
+		return 1;
+}
+
+int delete_info(listmb &ds, MayBay info)
+{
+	int dem=0;
+	for(int i=0;i<ds.n; )
+	{
+		if(strcmp(ds.mb[i].sohieu, info.sohieu)==0)
+		{
+			delete_item(ds,i);
+			dem++;	
+		}
+		else i++;
+	}
+	return dem;
+}

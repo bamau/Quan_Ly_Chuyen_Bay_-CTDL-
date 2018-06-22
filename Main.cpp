@@ -7,58 +7,97 @@ using namespace std;
 
 int main()
 {
-	switch (MenuDong(thucdon))
+	listmb dsmb;
+	char *tenfile=new char[50];
+
+	int choice=MenuDong(thucdon);
+	switch(choice)
 	{
-		case 1://quan ly danh sach may bay
-		{
-//			switch(MenuDong(thucdon2))	
-//			{
-//				case 1:
-//					cout<<"Nhap ten file muon tao: ";
-//					gets(tenfile);
-//					
-//			}
-//		}
-			switch (MenuDong(thucdon1))
+		case 1://quan ly dsmb
 			{
-				char *tenfile;
-				case 1://them may bay 
-					char key;
-					insert_item(dsmb);
-					xuatds_mb(dsmb);
-					cout<<endl;
-					SaveList(dsmb,tenfile);
-					cout<<"Ban co muon luu danh sach khong ? Nhap(Y/N): ";
-					key=getch();
-					if(key=='y')
-					{
-						cout<<endl;
-						cout<<"Nhap ten file muon tao: ";
-						cin>>tenfile;
-					}else break;
-					break;
-				case 2://sua may bay
-						
-						
-					break;
-				case 3://xoa may bay
-						
-							
-					break;
+				Normal();
+				int choice2=MenuDong(thucdon2);
+				switch(choice2)
+				{
+					case 1:
+						{	
+							Normal();
+							system("cls");
+							cout<<"Nhap ten file can tao: ";
+							gets(tenfile);
+							SaveList(dsmb,tenfile);
+							cout<<"Da tao thanh cong!\n";
+							break;
+						}
+					case 2:
+						{
+							Normal();
+							system("cls");
+							cout<<"Nhap ten file trong o cung: ";
+							gets(tenfile);
+							OpenList(dsmb, tenfile);
+							Sleep(1000);
+							int choice1=MenuDong(thucdon1);
+							switch(choice1)
+							{
+								case 1:
+									{
+										Normal();
+										system("cls");
+										int n;
+										cout<<"Nhap so may bay muon them: ";
+										cin>>n;
+										insert_item(dsmb, n);
+										Quicksort(dsmb, 0, dsmb.n-1);
+										SaveList(dsmb,tenfile);
+										break;
+									}
+								case 2:
+									{
+										Normal();
+										system("cls");
+										MayBay info, result;
+										cout<<"Nhap vao so hieu may bay can sua: ";
+										gets(info.sohieu);
+										int kq=BSearch(dsmb, info);
+										if (kq==-1)
+										{
+											cout<<"Khong tim thay!\n";
+										}
+										else
+										{
+											cout<<"Da tim thay. Nhap so lieu may bay moi: \n";
+											edit_list(dsmb,info, result);
+											Quicksort(dsmb, 0, dsmb.n-1);
+											SaveList(dsmb, tenfile);
+										}
+										break;
+									}
+								case 3:
+									{
+										Normal();
+										system("cls");
+										MayBay info;
+										cout<<"Nhap vao so hieu may bay can xoa: ";
+										gets(info.sohieu);
+										int kq=delete_info(dsmb, info);
+										cout<<"Da xoa "<<kq<<" may bay!\n";
+										SaveList(dsmb,tenfile);
+										break;
+									}
+								case 4:
+									{
+										Normal();
+										system("cls");
+										xuatds_mb(dsmb);
+										break;
+									}
+							}
+							break;
+						}
+				}
+				
 			}
-		}
-		break;
-		case 2://quan ly danh sach chuyen bay
-			
-			
-		break;
-		case 3://quan ly danh sach ve
-			
-			
-		break;
-		case 4://quan ly danh sach hanh khach
-			
-			
-		break;	
 	}
+	return 0;
 }

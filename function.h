@@ -85,10 +85,7 @@ const int dong =2;
 const int cot = 2 ;
 const int Up = 72;
 const int Down = 80;
-char thucdon [so_item][50] = {"1. Quan ly danh sach may bay       ",
-			                  "2. Quan ly danh sach chuyen bay    ",
-			                  "3. Quan ly danh sach ve            ",
-			                  "4. Quan ly danh sach hanh khach    ",};
+
 void Normal () {
 	SetColor(15);
 	SetBGColor(0);
@@ -99,7 +96,9 @@ void HighLight () {
 }
 int MenuDong(char td [so_item][50]){
   Normal();
-  system("cls");   int chon =0;
+  system("cls");   
+  cout<<"----------------------------------------------------QUAN  LY CHUYEN BAY-------------------------------------------------\n";
+  int chon =0;
   int i; 
   for ( i=0; i< so_item ; i++)
   { gotoxy(cot, dong +i);
@@ -142,9 +141,16 @@ do {
   } while (1);
 }
 
+char thucdon [so_item][50] = {"1. Quan ly danh sach may bay       ",
+			                  "2. Quan ly danh sach chuyen bay    ",
+			                  "3. Quan ly danh sach ve            ",
+			                  "4. Quan ly danh sach hanh khach    ",
+							 };
+			                  
 char thucdon1 [so_item][50] = {"1. Them may bay  ",
 			                   "2. Sua may bay   ",
 			                   "3. Xoa may bay   ",
+			                   "4. In danh sach  ",
 			                  };
 
 char thucdon2 [so_item][50] = {"1. Create file moi       ",
