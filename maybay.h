@@ -31,6 +31,7 @@ void nhap_mb(MayBay &mb)
 	fflush(stdin);
 	cout<<"Nhap so ghe ngoi: ";
 	cin>>mb.cho;
+	cout<<endl;
 	}while(mb.cho<20);
 }
 
@@ -46,12 +47,12 @@ void nhapds_mb(listmb &dsmb)//HAM NHAP DANH SACH MAY BAY
 //HAM XUAT THONG TIN MOT MAY BAY
 void xuat_mb(MayBay mb)
 {
-	cout<< mb.sohieu<<"\t"<<mb.loai<<"\t\t"<<mb.cho<<endl;
+	cout<< mb.sohieu<<"\t\t"<<mb.loai<<"\t\t\t"<<mb.cho<<endl;
 };
 //HAM XUAT DANH SACH MAY BAY
 void xuatds_mb(listmb dsmb)
 {
-	cout<<"So Hieu\t"<<"Loai\t\t"<<"Cho"<<endl;
+	cout<<"SoHieu\t\t"<<"Loai\t\t\t"<<"Cho"<<endl;
 	for(int i=0; i<dsmb.n; i++)
 	{
 		xuat_mb(dsmb.mb[i]);
@@ -75,10 +76,10 @@ void SaveList (listmb &dsmb, char *tenfile){
   fclose(f);
 }
 
-void OpenList ( listmb &dsmb, char *tenfile){
+int OpenList ( listmb &dsmb, char *tenfile){
   FILE *f; 
   f= fopen (tenfile, "rb");
-  if (f==NULL) { cout<< "Loi mo file de doc"; return ; }
+  if (f==NULL) { cout<< "Loi mo file de doc"; return -1 ; }
   else cout<<"Load file thanh cong!\n";
   int i=0;
    while ( fread (&dsmb.mb, sizeof(dsmb.mb),1,f)!=0 ) i++;
@@ -120,36 +121,6 @@ int BSearch(listmb &ds,MayBay info)
 	return -1;
 }
 
-void Edit_list(listmb &ds,MayBay info)
-{
-	int left=0;
-	int right=ds.n-1;
-	char *tenfile;
-	cout<<"Nhap so hieu may bay can sua: ";
-	gets(info.sohieu);
-	do
-	{
-		for(int i=0 ; i<ds.n ;i++)
-		{
-			int mid=(left+right)/2;
-			if(strcmp(ds.mb[mid].sohieu, info.sohieu)==0)	
-			{
-				cout<<"Nhap thong tin moi: ";
-				nhap_mb(info);
-				strcpy(ds.mb[mid].sohieu, info.sohieu);
-				strcpy(ds.mb[mid].loai, info.loai);
-				ds.mb[mid].cho = info.cho;
-				SaveList(ds,tenfile);
-				left=mid+1;
-			}
-			else if(strcmp(ds.mb[mid].sohieu, info.sohieu)==1)
-				right=mid-1;
-			else 
-				left=mid+1;	
-		}
-	}while(left<=right);
-	cout<<"Khong tim thay!\n";
-}
 void edit_list(listmb &ds, MayBay info, MayBay result)
 {
 	int dem=0;

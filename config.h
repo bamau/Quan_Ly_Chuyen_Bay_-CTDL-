@@ -42,19 +42,25 @@ struct ngaybay
 struct ChuyenBay
 {
 	char macb[15];
+	char sohieu_mb[15];
 	ngaybay ngay_cb;
 	giobay gio_cb;
 	char sanbay_den[50]; 
 	int trangthai;
-	char sohieu_mb[15];
 	danhsachve ds;
 };
-struct listcb
+struct Node
 {
-	ChuyenBay cb;
-	listcb *pnext; //tro den phan tu ke tiep
+	ChuyenBay data;
+	Node *pnext; //tro den phan tu ke tiep
 };
-typedef struct listcb* PTRCB; 
+typedef struct Node *PTRCB;
+struct ListCB 
+{
+	PTRCB pHead;
+	PTRCB pTail;
+};
+typedef struct ListCB *LISTCB;
 
 
 

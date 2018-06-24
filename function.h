@@ -5,6 +5,7 @@
 const int ENTER =13;
 const int SPACE=32;
 const int ESC=27;
+const int BACK=8;
 using namespace std;
 void BaoLoi(char *S)
 {
@@ -21,11 +22,11 @@ void ClearRow(int x,int y)
 	gotoxy(x,y);
 	cout<<"                                                                             ";
 }
-char *InputWord(int n)
+char *InputWord()
 {
 	char c=0;
-	char *temp=new char[n];
-	for(int vt=0;vt<n;vt++)
+	char *temp=new char[strlen(temp)];
+	for(int vt=0;vt<strlen(temp);vt++)
 	{
 		c=getch();
 		if (c== ENTER) break;
@@ -40,7 +41,7 @@ char *InputWord(int n)
 			delete temp;
 			BaoLoi("Da xoa");
 			break;
-		}else if((c>=65 && c<=90)||(c>=90 && c<=122)||c==SPACE)
+		}else if((c>=65 && c<=90)||(c>=90 && c<=122)||(c>=48 && c<=57)||c==SPACE)
 				{ 
 					strcpy(&temp[vt],&c);
 					cout<<temp[vt];
@@ -49,38 +50,39 @@ char *InputWord(int n)
 	}
 	return temp;
 }
-char *InputNumber(int n)
-{
-	char c=0;
-	char *temp=new char[n];
-	for(int vt=0;vt<n;++vt)
-	{
-		c=getch();
-		if(c==ENTER) break;
-		else if(vt==0 && c==SPACE)
-			{
-				BaoLoi("Dau day khong duoc khoang trang !");
-				vt--;
-				continue;
-			}
-			if(c==ESC)
-			{
-				ClearRow(0,0);
-				delete temp;
-				BaoLoi("Da xoa");
-				break;
-			}else if(c>=48 && c<=57)
-				{ 
-					strcpy(&temp[vt],&c);
-					cout<<temp[vt];
-				}else 
-					BaoLoi("Nhap loi!");	
-	}
-	return temp;
-}
+//int InputNumber(int n)
+//{
+//		c=getch();
+//		if(c==ENTER) break;
+//		else if(vt==0 && c==SPACE)
+//			{
+//				BaoLoi("Dau day khong duoc khoang trang !");
+//				vt--;
+//				continue;
+//			}
+//			if(c==ESC)
+//			{
+//				ClearRow(0,0);
+//				delete temp;
+//				BaoLoi("Da xoa");
+//				break;
+//			}else if(c>=48 && c<=57)
+//				{ 
+//					strcpy(&temp[vt],&c);
+//					cout<<temp[vt];
+//				}else 
+//					BaoLoi("Nhap loi!");	
+//	}
+//	return temp;
+//}
 
+int count_item(char td [][50])
+{
+	int i;
+	for(i = 0; td[i][0] != NULL; ++i);
+	return i;
+}
 //menu dong
-const int so_item = 4;
 const int dong =2;
 const int cot = 2 ;
 const int Up = 72;
@@ -94,12 +96,13 @@ void HighLight () {
 	SetColor(15);
 	SetBGColor(1);
 }
-int MenuDong(char td [so_item][50]){
+int MenuDong(char td [][50]){
   Normal();
   system("cls");   
   cout<<"----------------------------------------------------QUAN  LY CHUYEN BAY-------------------------------------------------\n";
   int chon =0;
   int i; 
+  int so_item=count_item(td);
   for ( i=0; i< so_item ; i++)
   { gotoxy(cot, dong +i);
     cout << td[i];
@@ -141,21 +144,25 @@ do {
   } while (1);
 }
 
-char thucdon [so_item][50] = {"1. Quan ly danh sach may bay       ",
+char thucdon [5][50] = {"1. Quan ly danh sach may bay       ",
 			                  "2. Quan ly danh sach chuyen bay    ",
 			                  "3. Quan ly danh sach ve            ",
 			                  "4. Quan ly danh sach hanh khach    ",
+			                  "5. Thoat chuong trinh              ",
 							 };
 			                  
-char thucdon1 [so_item][50] = {"1. Them may bay  ",
+char thucdon1 [6][50] = {"1. Them may bay  ",
 			                   "2. Sua may bay   ",
 			                   "3. Xoa may bay   ",
 			                   "4. In danh sach  ",
+			                   "5. Quay lai      ",
+			                   "6. Thoat         ",
 			                  };
 
-char thucdon2 [so_item][50] = {"1. Create file moi       ",
+char thucdon2 [4][50] = {"1. Create file moi       ",
 			                   "2. Load file tu o dia    ",
-			                  };
+			                   "3. Quay lai              ",
+			                   "4. Thoat                 ",};
 
 
 
@@ -163,28 +170,5 @@ char thucdon2 [so_item][50] = {"1. Create file moi       ",
 
 
 
-////HAM NHAP THONG TIN CHUYEN BAY
-//void nhapcb (ChuyenBay &cb)
-//{
-//	fflush(stdin);
-//	cout<<"Nhap ma chuyen bay: ";
-//	gets(cb.macb);
-//	fflush(stdin);
-//	cout<<"Nhap so hieu may bay: ";
-//	gets(cb.sohieu_mb);
-//	fflush(stdin);
-//	cout<<"Nhap ngay bay: ";
-//	cin>>cb.ngay_cb.ngay>>cb.ngay_cb.thang>>cb.ngay_cb.nam;
-//	fflush(stdin);
-//	cout<<"Nhap gio bay: ";
-//	cin>>cb.gio_cb.gio>>cb.gio_cb.phut;
-//	fflush(stdin);
-//	cout<<"Nhap san bay den: ";
-//	gets(cb.sanbay_den);
-//	fflush(stdin);
-//	cout<<"Nhap trang thai: ";
-//	cin>>cb.trangthai;
-//};
-////HAM NHAP DANH SACH CHUYEN BAY
-//
+
 
