@@ -5,19 +5,32 @@
 #include <iomanip>
 #define TRUE 1
 #define FALSE 0 
+using namespace std;
+
+int empty(listmb &dsmb);
+int full(listmb &dsmb);
+void nhap_mb(MayBay &mb);
+void nhapds_mb(listmb &dsmb);
+void xuat_mb(MayBay mb);
+void xuatds_mb(listmb dsmb);
+void SaveList (listmb &dsmb, char *tenfile);
+int OpenList ( listmb &dsmb, char *tenfile);
+int insert_item(listmb &dsmb,int n);
+int BSearch(listmb &ds,MayBay info);
+int delete_item(listmb &ds,int i);
+int delete_info(listmb &ds, MayBay info);
+void edit_list(listmb &ds, MayBay info, MayBay result);
+void Quicksort(listmb &dsmb, int left, int right);
+
 
 int empty(listmb &dsmb)
 {
 	return(dsmb.n==0 ? TRUE : FALSE);
 }
-
 int full(listmb &dsmb)
 {
 	return(dsmb.n==MAXMB ? TRUE : FALSE);
 }
-
-
-//HAM NHAP THONG TIN MAY BAY
 void nhap_mb(MayBay &mb)
 {
 	fflush(stdin);
@@ -34,8 +47,7 @@ void nhap_mb(MayBay &mb)
 	cout<<endl;
 	}while(mb.cho<20);
 }
-
-void nhapds_mb(listmb &dsmb)//HAM NHAP DANH SACH MAY BAY
+void nhapds_mb(listmb &dsmb)
 {
 	dsmb.n;
 	for(int i=0; i<dsmb.n; i++)
@@ -44,28 +56,22 @@ void nhapds_mb(listmb &dsmb)//HAM NHAP DANH SACH MAY BAY
 	}
 	cout<<"Da nhap xong "<<dsmb.n<<" may bay!\n";
 };
-//HAM XUAT THONG TIN MOT MAY BAY
 void xuat_mb(MayBay mb)
 {
 	cout<< mb.sohieu<<"\t\t"<<mb.loai<<"\t\t\t"<<mb.cho<<endl;
 };
-//HAM XUAT DANH SACH MAY BAY
 void xuatds_mb(listmb dsmb)
 {
+	cout<<"\t\t\t======DANH SACH CAC MAY BAY======\n\n";
 	cout<<"SoHieu\t\t"<<"Loai\t\t\t"<<"Cho"<<endl;
 	for(int i=0; i<dsmb.n; i++)
 	{
 		xuat_mb(dsmb.mb[i]);
 	}
 };
-// HAM KIEM TRA DS DA DAY CHUA
-int kt_full(listmb dsmb)
+void SaveList (listmb &dsmb, char *tenfile)
 {
-	return (dsmb.n==	MAXMB ? TRUE : FALSE);
-}
-
-void SaveList (listmb &dsmb, char *tenfile){
-  FILE *f;// khai bao bien file
+  FILE *f;
   f= fopen (tenfile, "wb"); 
   if (f==NULL) { cout<< "Loi mo file de ghi"; return ; }
   
@@ -75,19 +81,17 @@ void SaveList (listmb &dsmb, char *tenfile){
   }
   fclose(f);
 }
-
-int OpenList ( listmb &dsmb, char *tenfile){
+int OpenList (listmb &dsmb, char *tenfile)
+{
   FILE *f; 
   f= fopen (tenfile, "rb");
-  if (f==NULL) { cout<< "Loi mo file de doc"; return -1 ; }
-  else cout<<"Load file thanh cong!\n";
+  if (f==NULL) { cout<< "\nLoi mo file de doc\n"; return -1 ; }
+  else cout<<"\nLoad file thanh cong!\n";
   int i=0;
    while ( fread (&dsmb.mb, sizeof(dsmb.mb),1,f)!=0 ) i++;
   fclose(f);
   dsmb.n=i;
 }
-
-
 int insert_item(listmb &dsmb,int n)
 {
 	if (full(dsmb)==TRUE)
@@ -100,8 +104,7 @@ int insert_item(listmb &dsmb,int n)
 		}
 		cout<<"\nDa them "<<n<<" may bay!\n";
 }
-
-int BSearch(listmb &ds,MayBay info)
+int BSearch(listmb &ds, MayBay info)
 {
 	int left=0;
 	int right=ds.n-1;
@@ -120,7 +123,6 @@ int BSearch(listmb &ds,MayBay info)
 	}while(left<=right);
 	return -1;
 }
-
 void edit_list(listmb &ds, MayBay info, MayBay result)
 {
 	int dem=0;
@@ -167,15 +169,16 @@ void Quicksort(listmb &dsmb, int left, int right)
 	Quicksort(dsmb, left, j);
 	Quicksort(dsmb, i, right);
 }
-int delete_item(listmb &ds,int i){
+int delete_item(listmb &ds,int i)
+{
 	int j;
-	for(j=i+1;j<ds.n;++j){
+	for(j=i+1;j<ds.n;++j)
+	{
 		ds.mb[j-1]=ds.mb[j];
 	}
-		ds.n--;
-		return 1;
+	ds.n--;
+	return 1;
 }
-
 int delete_info(listmb &ds, MayBay info)
 {
 	int dem=0;
